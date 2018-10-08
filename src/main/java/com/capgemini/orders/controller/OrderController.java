@@ -1,9 +1,13 @@
 package com.capgemini.orders.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +29,7 @@ public class OrderController {
 	}
 
 	@DeleteMapping("/delete/{orderId}")
-	public ResponseEntity<Order> deleteOrder(@RequestParam int orderId) {
+	public ResponseEntity<Order> deleteOrder(@PathVariable int orderId) {
 		Order order1 = orderService.findOrderById(orderId);
 		if (order1 != null) {
 			orderService.deleteOrder(orderId);
@@ -34,4 +38,18 @@ public class OrderController {
 		return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
 	}
 
+	@GetMapping("/all")
+	public ResponseEntity<List> getAllCustomers() {
+		List<Order> list = orderService.viewAllOrders();
+		return new ResponseEntity<List>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/order/{orderId}")
+	public ResponseEntity<Order> viewOrder(@PathVariable int orderId) {
+		Order order1 = orderService.findOrderById(orderId);
+		if (order1 != null) {
+			return new ResponseEntity<Order>(orderService.findOrderById(orderId), HttpStatus.OK);
+		}
+		return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
+	}
 }

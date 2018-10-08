@@ -30,11 +30,10 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void deleteOrder(int orderId) throws OrderDoesNotExist {
 		Optional<Order> order1 = orderRepository.findById(orderId);
-		if (order1.isPresent()) {
-			orderRepository.delete(order1.get());
+		if (!order1.isPresent()) {
+			throw new OrderDoesNotExist("Order does not exist");
 		}
-		throw new OrderDoesNotExist("Order does not exist");
-
+		orderRepository.deleteById(order1.get().getOrderId());
 	}
 
 	@Override
