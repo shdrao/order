@@ -39,7 +39,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List> getAllCustomers() {
+	public ResponseEntity<List> getAllOrders() {
 		List<Order> list = orderService.viewAllOrders();
 		return new ResponseEntity<List>(list, HttpStatus.OK);
 	}
